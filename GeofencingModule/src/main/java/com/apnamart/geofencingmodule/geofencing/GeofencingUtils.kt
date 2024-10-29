@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.apnamart.geofencingmodule.geofencing.geofence_entity.GeofenceData
+import com.apnamart.geofencingmodule.geofencing.data.GeofenceData
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
@@ -26,39 +26,9 @@ class GeofenceHelper(private val context: Context) {
     ) {
         val intent = createPendingIntent(context, receiverClass, action)
 
-        val list = createGeofence(geofenceList, onFailure)
+//        val list = createGeofence(geofenceList, onFailure)
 
-        removeAndAddGeofence(list, intent, onSuccess, onFailure)
-    }
-
-    private fun createGeofence(
-        geofenceList: List<GeofenceData>,
-        onFailure: (Exception) -> Unit
-    ): List<Geofence> {
-        return geofenceList.mapNotNull { it.toGeofence(
-            onFailure
-        ) }
-    }
-
-    private fun GeofenceData.toGeofence(
-        onFailure: (Exception) -> Unit
-    ): Geofence? {
-        return try {
-            val geofence = Geofence.Builder()
-                .setRequestId(requestId)
-                .setCircularRegion(
-                    latitude, longitude,
-                    radius
-                )
-                .setTransitionTypes(transactionType)
-            delay?.let {
-                geofence.setLoiteringDelay(it)
-            }
-            geofence.build()
-        } catch (e: Exception) {
-            onFailure.invoke(e)
-            null
-        }
+//        removeAndAddGeofence(list, intent, onSuccess, onFailure)
     }
 
     private fun createPendingIntent(context: Context, receiverClass: Class<*>, action : String): PendingIntent {
